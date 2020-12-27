@@ -3,7 +3,7 @@
 # import ros stuff
 import rospy
 from std_srvs.srv import *
-from std_msgs.msg import *
+
 
 # service callback
 def isInteger(n):

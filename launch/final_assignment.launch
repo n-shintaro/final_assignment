@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 
 <launch>
-	<arg name="s" default= "1"/>
+    <arg name="s" default= "1"/>
     <param name="state" value="$(arg s)" />
     <arg name="des_x" default= "1"/>
     <arg name="des_y" default= "1"/>
     <param name="des_pos_x" value="$(arg des_x)" />
     <param name="des_pos_y" value="$(arg des_y)" />
     <node pkg="final_assignment" type="decide_state.py" name="decide_state" output="screen" />
-    <node pkg="final_assignment" type="robot_control.py" name="robot_control" output="screen" />
     <node pkg="final_assignment" type="target_server.py" name="target_server" output="screen" />
+    <node pkg="final_assignment" type="robot_control.py" name="robot_control" output="screen" />
 </launch>
