@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<launch>
+	<arg name="s" default= "1"/>
+    <param name="state" value="$(arg s)" />
+    <node pkg="final_assignment" type="decide_state.py" name="decide_state" output="screen" />
+    <node pkg="final_assignment" type="robot_control.py" name="robot_control" output="screen" />
+</launch>
