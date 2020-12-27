@@ -3,6 +3,7 @@
 # import ros stuff
 import rospy
 from std_srvs.srv import *
+from std_msgs.msg import *
 
 # service callback
 def isInteger(n):
@@ -26,20 +27,23 @@ def get_new_state(req):
         return get_new_state(req)
     if state<=5 and state>=1 and isInteger(state):
         print("Thanks! Let's change the state")
-
         rospy.set_param("state", state)
+        res = SetBoolResponse()
+        res.success = True
+        res.message = 'Done!'
     else:
         print("please enter 1, 2, 3 and 4")
         return get_new_state(req)
-    return []
+    return res
+
 
 
 def main():
     rospy.init_node('decide_state')
     state= rospy.get_param("state")
-    print("Hi! We are finishing the state: state = " +
+    print("Hi! update state from = " +
           str(state))
-    srv = rospy.Service('/change_state', Empty, get_new_state)
+    srv = rospy.Service('/change_state',SetBool, get_new_state)
     rate = rospy.Rate(20)
     while not rospy.is_shutdown():
         rate.sleep()
