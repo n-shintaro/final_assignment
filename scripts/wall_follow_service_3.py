@@ -120,7 +120,7 @@ def follow_the_wall():
 def main():
     global pub_, active_
 
-    rospy.init_node('reading_laser')
+    rospy.init_node('state3')
 
     pub_ = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
 
