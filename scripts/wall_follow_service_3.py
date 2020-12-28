@@ -130,6 +130,7 @@ def main():
 
     rate = rospy.Rate(20)
     while not rospy.is_shutdown():
+        print('wall_follow_service')
         if not active_:
             rate.sleep()
             continue

@@ -65,23 +65,32 @@ def change_action(state):
     else:
         rospy.logerr('Unknown state!')
 
+def next_action(req):
+    global updated_state_
+    print('go to next action')
+    updated_state_=False
+    res = SetBoolResponse()
+    res.success = True
+    res.message = 'Done!'
+    return res
+
 def main():
     global updated_state_
     rospy.init_node('robot_control')
-    rate = rospy.Rate(20)
+    rate = rospy.Rate(10)
+    s = rospy.Service('/reach_goal', SetBool, next_action)
+    #reach_goal_s = rospy.Service('reach_goal', Empty, next_action)
     updated_state_srv = rospy.ServiceProxy('/change_state',SetBool)
     while not rospy.is_shutdown():
-        if not updated_state_:
+        if updated_state_:
+            rate.sleep()
+            #continue
+        else:
             response=updated_state_srv()
             updated_state_=response.success
             state= rospy.get_param("state")
             change_action(state)
-        else:
-            rate.sleep()
-            continue
-
         rate.sleep()
-
 
 if __name__ == '__main__':
     main()

@@ -61,6 +61,7 @@ class Robot:
         self.vel_x=None
         self.vel_y=None
         self.yaw_ = 0
+        self.goal_flag=0
 
         self.des_pub = rospy.Publisher('/move_base/goal',MoveBaseActionGoal, queue_size=10)
         self.sub_odom = rospy.Subscriber('/odom', Odometry, self.clbk_odom)
@@ -88,6 +89,7 @@ class Robot:
             print('des_y='+str(self.y_des))
             print('x='+str(self.x))
             print('y='+str(self.y))
+            self.goal_flag=1
     
     def send_destination(self):
         print('send the destination to the robot')
