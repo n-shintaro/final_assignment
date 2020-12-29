@@ -13,55 +13,23 @@ from move_base_msgs.msg import MoveBaseActionGoal
 # robot state variable
 
 robot=Robot()
-
-
 updated_state_=False
 
-
-
-
-
-
-def move_random():
-    print('state1 : move randomly')
-    set_target = rospy.ServiceProxy('/select_target', RandomPosition)
-    response=set_target()
-    robot.x_des=response.x
-    robot.y_des=response.y
-    send_destination()
-
-def user_input():
-    print('state2 : user input the destination')
-    candidate_des_pos_x=[-4,-4,-4,5,5,5]
-    candidate_des_pos_y=[-3,2,7,-7,-3,1]
-    candidate_des_pos=[(-4,-3),(-4,2),(-4,7),(5,-7),(5,-3),(5,1)]
-    print("Please insert a new state from "+str(candidate_des_pos))
-    try:
-        des_x = float(raw_input('des_pos_x :'))
-        des_y =float(raw_input('des_pos_y :'))
-    except:
-        print("an error occurred")
-        return user_input()
-    if (des_x,des_y) in candidate_des_pos:
-        print("Thanks! Let's change the des")
-        robot.x_des=des_x
-        robot.y_des=des_y
-        send_destination()
-    else:
-        print("value is invalid.\n You should choose from"+str(candidate_des_pos))
-        return user_input()
-
-def change_action(state):
+def change_state(state):
     if state == 1:
+        print('state1 :move randomly in the environment')
         random_move_srv = rospy.ServiceProxy('/move_random',SetBool)
         response=random_move_srv(True)
     elif state == 2:
-        user_input()
+        print('state2 : ask the user of the next target position')
+        user_input_srv = rospy.ServiceProxy('/user_input',SetBool)
+        response=user_input_srv(True)
     elif state == 3:
+        print('state3 : the robot follow the wall')
         wall_follow_srv = rospy.ServiceProxy('wall_follower_switch',SetBool)
         response=wall_follow_srv(True)
     elif state == 4:
-        print('state4')
+        print('state4 :stop in the last position')
     else:
         rospy.logerr('Unknown state!')
 
@@ -89,7 +57,7 @@ def main():
             response=updated_state_srv()
             updated_state_=response.success
             state= rospy.get_param("state")
-            change_action(state)
+            change_state(state)
         rate.sleep()
 
 if __name__ == '__main__':

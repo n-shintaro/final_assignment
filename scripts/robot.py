@@ -82,8 +82,10 @@ class Robot:
 
     def judge_goal(self):
         err_pos = math.sqrt((self.y_des - self.y)**2 +(self.x_des - self.x)**2)
-        print('err_pos='+str(err_pos))
-        if(err_pos < 1.0):
+        print('robot.position.x='+str(self.x)+' robot.position.y='+str(self.y))
+        print('destination.position.x='+str(self.x_des)+' destination.position.y='+str(self.y_des))
+        print('distance to destination='+str(err_pos))
+        if(err_pos < 0.8):
             print('reach goal!!!!!')
             print('des_x='+str(self.x_des))
             print('des_y='+str(self.y_des))
