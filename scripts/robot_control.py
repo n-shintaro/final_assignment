@@ -13,6 +13,7 @@
             start following the external walls
         - state 4:
             stop in the last position
+
 """
 
 import rospy
@@ -20,6 +21,7 @@ import math
 from robot import *
 from std_srvs.srv import *
 from std_msgs.msg import *
+from geometry_msgs.msg import Twist
 from final_assignment.srv import RandomPosition
 from nav_msgs.msg import Odometry
 from tf import transformations
@@ -30,6 +32,7 @@ robot=Robot()
 updated_state_=False
 
 def change_state(state):
+
     """
         This is the function to change the state depending on user's command(state).
     
@@ -51,24 +54,33 @@ def change_state(state):
         ----------
         None
     """
+    global updated_state_
     if state == 1:
-        print('state1 :move randomly in the environment')
+        print('-------state1 :move randomly in the environment-------')
         random_move_srv = rospy.ServiceProxy('/move_random',SetBool)
         response=random_move_srv(True)
     elif state == 2:
-        print('state2 : ask the user of the next target position')
+        print('-------state2 : ask the user of the next target position-------')
         user_input_srv = rospy.ServiceProxy('/user_input',SetBool)
         response=user_input_srv(True)
     elif state == 3:
-        print('state3 : the robot follow the wall')
+        print('-------state3 : the robot follow the wall-------')
         wall_follow_srv = rospy.ServiceProxy('wall_follower_switch',SetBool)
         response=wall_follow_srv(True)
         updated_state_=False
     elif state == 4:
-        print('state4 :stop in the last position')
+        print('-------state4 :stop in the last position-------')
+        stop()
         updated_state_=False
     else:
         rospy.logerr('Unknown state!')
+
+def stop():
+    pub_ = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
+    msg = Twist()
+    msg.linear.x = 0.0
+    msg.angular.z = 0.0
+    pub_.publish(msg)
 
 def next_action(req):
     """
@@ -96,7 +108,7 @@ def next_action(req):
     return res
 
 def main():
-     """
+    """
         This is main function.
 
         If updated_state_=True, this node don't anything and
@@ -114,21 +126,23 @@ def main():
         None
     """
     global updated_state_
+
     rospy.init_node('robot_control')
     rate = rospy.Rate(10)
     s = rospy.Service('/reach_goal', SetBool, next_action)
     #reach_goal_s = rospy.Service('reach_goal', Empty, next_action)
-    updated_state_srv = rospy.ServiceProxy('/change_state',SetBool)
+    update_state_srv = rospy.ServiceProxy('/change_state',SetBool)
     while not rospy.is_shutdown():
         if updated_state_:
             rate.sleep()
             #continue
         else:
-            response=updated_state_srv()
+            response=update_state_srv()
             updated_state_=response.success
             state= rospy.get_param("state")
             change_state(state)
-        rate.sleep()
+
+
 
 if __name__ == '__main__':
     main()

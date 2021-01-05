@@ -97,7 +97,7 @@ class Robot:
             msg.pose.pose.orientation.z,
             msg.pose.pose.orientation.w)
         euler = transformations.euler_from_quaternion(quaternion)
-        self.aa = euler[2]
+        self.yaw = euler[2]
 
     def judge_goal(self):
         """
@@ -115,15 +115,14 @@ class Robot:
         None
         """
         err_pos = math.sqrt((self.y_des - self.y)**2 +(self.x_des - self.x)**2)
-        print('robot.position.x='+str(self.x)+' robot.position.y='+str(self.y))
-        print('destination.position.x='+str(self.x_des)+' destination.position.y='+str(self.y_des))
+        print("t= %s" % rospy.get_time()+"-----------")
+        print('destination position=['+str(self.x_des)+','+str(self.y_des)+"]")
+        print('the current position=['+str(self.x)+','+str(self.y)+"]")
+        print('the current yaw angle=['+str(self.yaw))
         print('distance to destination='+str(err_pos))
+
         if(err_pos < 0.8):
             print('reach goal!!!!!')
-            print('des_x='+str(self.x_des))
-            print('des_y='+str(self.y_des))
-            print('x='+str(self.x))
-            print('y='+str(self.y))
             self.goal_flag=1
     
     def send_destination(self):

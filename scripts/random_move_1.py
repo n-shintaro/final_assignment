@@ -26,7 +26,7 @@ import math
 # mode=0: This node don't do anything.
 # mode=1: This node send the robot the position of target.
 # mode=2: The robot is moving to the target.
-#         This node subscribe the odom and check weather the robot is reaching the target.
+#          This node subscribe the odom and check weather the robot is reaching the target.
 mode_ = 0
 robot=Robot()
 

@@ -46,7 +46,8 @@ def get_new_state(req):
 
     In order to the robot execute one of 4 behaviors,
     we make the user requested to choose from the state 1~4.
-
+    When the previous state is 3, rhis commands the robot to stop following the wall.
+    
     Parameters:
         ----------
         req :SetBool
@@ -60,6 +61,10 @@ def get_new_state(req):
     """
 
     print("Please insert a new state from 1 to 4")
+    pre_state= rospy.get_param("state")
+
+    print("Hi! update state from = " +
+          str(pre_state))
     try:
         state = float(raw_input('state :'))
     except:
@@ -72,6 +77,10 @@ def get_new_state(req):
         res = SetBoolResponse()
         res.success = True
         res.message = 'Done!'
+        if pre_state==3:
+            # stop following the wall.
+            wall_follow_stop_srv = rospy.ServiceProxy('wall_follower_switch',SetBool)
+            response=wall_follow_stop_srv(False)
     else:
         print("please enter 1, 2, 3 and 4")
         return get_new_state(req)
@@ -80,7 +89,7 @@ def get_new_state(req):
 
 
 def main():
-     """
+    """
         initialize the node 'decide_state'.
         the server rospy.Service('/change_state',SetBool, get_new_state).
         is called.
@@ -95,9 +104,6 @@ def main():
     """
 
     rospy.init_node('decide_state')
-    state= rospy.get_param("state")
-    print("Hi! update state from = " +
-          str(state))
     srv = rospy.Service('/change_state',SetBool, get_new_state)
     rospy.spin()
 

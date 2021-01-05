@@ -9,7 +9,7 @@
     <param name="des_pos_y" value="$(arg des_y)" />
     <node pkg="final_assignment" type="random_move_1.py" name="random_move" output="screen"/>
     <node pkg="final_assignment" type="user_input_2.py" name="user_input" output="screen"/>
-    <node pkg="final_assignment" type="wall_follow_service_3.py" name="wall_follower" output="screen"/>
+    <node pkg="final_assignment" type="wall_follow_service_3.py" name="wall_follower"/>
     <node pkg="final_assignment" type="go_to_point_service_m.py" name="go_to_point" output="screen" />
     <node pkg="final_assignment" type="decide_state.py" name="decide_state" output="screen" />
     <node pkg="final_assignment" type="target_server.py" name="target_server" output="screen" />
