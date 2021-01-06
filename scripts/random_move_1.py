@@ -8,7 +8,7 @@
 
         -state 1:
             move randomly in the environment, by choosing 1 out of 6 possible target positions:
-            [(-4,-3);(-4,2);(-4,7);(5,-7);(5,-3);(5,1)], implementing a random position service as in the assignment 1
+            [(-4,-3);(-4,2);(-4,7);(5,-7);(5,-3);(5,1)], implementing a random position service.
 
 """
 

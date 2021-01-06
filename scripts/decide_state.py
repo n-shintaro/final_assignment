@@ -4,7 +4,7 @@
 """
     This is the file to ask user to decide the new state of the robot
     when the service "/change_state" is called.
-    We make the user requested to choose from the state 1~4.
+    This node make the user requested to choose from the state 1~4.
 
         -state 1:
             move randomly in the environment, by choosing 1 out of 6 possible target positions:
