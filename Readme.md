@@ -229,7 +229,10 @@ To launch the file which is the main file to command the robot,
 roslaunch final_assignment final_assignment.launch
 ```
 
-
+If you have an error like "can't find final assignment package",
+```
+source devel/setup.bash
+```
 
 
 
@@ -237,10 +240,13 @@ roslaunch final_assignment final_assignment.launch
 
 We describe system’s limitations and possible improvements.
 
+Move_bas package provide us a lot of topic (reference: http://wiki.ros.org/move_base). For example, "move_base/status"  provides status information on the goals that are sent to the move_base action. If goal_id==3, it means that the goal was achieved successfully. In my case, when I judge whether the robot reach the goal, I calculate the distance between the target position and the current position. But if i use this topic, I can judge more easily and correctly. And In my case, when I judge whether the robot reach the goal, we don't consider the angle of orientation. I can improve like below. After distance between the target position and the current position is lower than the threshold, we can set the threshold for the angle of orientation and make the robot rotate on the spot. 
+
+
+
 SLAM algorithm create the mapping while moving and estimating the current position. Therefore, at the beginning, the robot plan the path which cannot be passed.
 So If we already know the map, we use amcl which estimate the current position by pattern matching with pre-existing maps and laser data. In this case, the robot already know the environment so it can solve this issue.  We already create the map data (saved in the "map" folder) so I want to use amcl, too.
 
 The robot plan the path by Dijsksta but this algorithm explore all of the possible grid node. So it takes a long time to calculate when there are a lot of nodes. There is the other algorithm called A* which use heuristics so this calculate faster than Dijskstra.
 
 In this environment, there are not dynamic obstacle like humans but our algorithm is not suitable for moving in the dynamic environment. Dynamic obstacle is moving unlike static environment so they cannot be written on the map. So the robot detect the position of dynamic obstacle and predict the motion of dynamic obstacle in real time. Further improvement and studies are needed in order for the robot to move in the dynamic environment.
-
