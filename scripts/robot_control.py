@@ -26,6 +26,7 @@ from final_assignment.srv import RandomPosition
 from nav_msgs.msg import Odometry
 from tf import transformations
 from move_base_msgs.msg import MoveBaseActionGoal
+
 # robot state variable
 
 robot=Robot()
@@ -96,6 +97,8 @@ def stop():
     msg.linear.x = 0.0
     msg.angular.z = 0.0
     pub_.publish(msg)
+
+    # in order to make "move_base" publish /cmd_vel
     robot.sub_odom
     robot.x_des=robot.x
     robot.y_des=robot.y
