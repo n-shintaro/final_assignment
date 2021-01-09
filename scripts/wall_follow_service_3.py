@@ -1,5 +1,15 @@
 #! /usr/bin/env python
 
+"""
+    This is the file to make the robot move as the state 2.
+    when the service "/user_input" is called.
+
+        -state 2:
+            directly ask the user of the next target position
+            (checking that the position is one of the possible six)
+
+"""
+
 import rospy
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist

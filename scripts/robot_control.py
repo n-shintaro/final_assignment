@@ -6,7 +6,7 @@
 
         - state 1:
             move randomly in the environment, by choosing 1 out of 6 possible target positions:
-            [(-4,-3);(-4,2);(-4,7);(5,-7);(5,-3);(5,1)], implementing a random position service as in the assignment 1
+            [(-4,-3);(-4,2);(-4,7);(5,-7);(5,-3);(5,1)], implementing a random position service.
         - state 2:
             directly ask the user of the next target position (checking that the position is one of the possible six)
         - state 3:
@@ -29,6 +29,7 @@ from move_base_msgs.msg import MoveBaseActionGoal
 # robot state variable
 
 robot=Robot()
+# when updated_state_=False, user can put the input command on the terminal
 updated_state_=False
 
 def change_state(state):
@@ -76,11 +77,30 @@ def change_state(state):
         rospy.logerr('Unknown state!')
 
 def stop():
-    pub_ = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
+    """
+        This is the function for state4.
+    - state 4:
+        stop in the last position
+
+    Parameters:
+        ----------
+        None
+
+        Returns:
+        ----------
+        None
+    """
+
+    pub_ = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
     msg = Twist()
     msg.linear.x = 0.0
     msg.angular.z = 0.0
     pub_.publish(msg)
+    robot.sub_odom
+    robot.x_des=robot.x
+    robot.y_des=robot.y
+    robot.send_destination()
+
 
 def next_action(req):
     """
